@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Your Trip – RouteMaster</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2; --dark: #1A1209; --gold: #C8973A;
+    --gold-light: #E8B55A; --rust: #B84A1E; --navy: #0F2044;
+    --text: #2C1F0E; --text-muted: #6B5840;
+    --border: rgba(200,151,58,0.2); --shadow: 0 8px 40px rgba(26,18,9,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); cursor: none; min-height: 100vh; }
+
+  .cursor { position: fixed; width: 14px; height: 14px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: multiply; transition: background 0.2s, transform 0.15s; }
+  .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1.5px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; opacity: 0.6; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 72px; background: rgba(250,247,242,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); box-shadow: 0 2px 20px rgba(26,18,9,0.07); }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
+  .logo span:first-child { color: var(--dark); }
+  .logo span:last-child { color: var(--gold); }
+  .nav-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  .nav-back:hover { color: var(--gold); }
+
+  /* HERO BANNER */
+  .booking-hero {
+    margin-top: 72px;
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .booking-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45); }
+  .booking-hero-content { position: relative; z-index: 1; text-align: center; color: #fff; padding: 0 2rem; }
+  .booking-hero-content .badge { display: inline-block; background: rgba(200,151,58,0.3); border: 1px solid rgba(200,151,58,0.5); border-radius: 100px; padding: 0.3rem 1rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; }
+  .booking-hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 0.7rem; }
+  .booking-hero-content p { font-size: 1rem; opacity: 0.75; max-width: 420px; margin: 0 auto; line-height: 1.6; }
+
+  /* MAIN LAYOUT */
+  .booking-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* FORM CARD */
+  .form-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  }
+  .form-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--dark); margin-bottom: 0.4rem;
+  }
+  .form-card .subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.5; }
+
+  .form-section-title {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); margin: 1.8rem 0 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .form-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group.full { grid-column: 1/-1; }
+
+  label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select, textarea {
+    border: 1.5px solid #e5ddd0; border-radius: 10px;
+    padding: 0.75rem 1rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem; color: var(--text); background: var(--cream);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%; cursor: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,151,58,0.12);
+  }
+  textarea { resize: vertical; min-height: 100px; }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5840' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+
+  /* TRIP TYPE SELECTOR */
+  .trip-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin-bottom: 0.5rem; }
+  .trip-type-option { display: none; }
+  .trip-type-label {
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    border: 1.5px solid #e5ddd0; border-radius: 10px;
+    padding: 1rem 0.6rem; cursor: none; transition: all 0.2s;
+    font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+    text-align: center; background: var(--cream);
+  }
+  .trip-type-label .icon { font-size: 1.4rem; }
+  .trip-type-option:checked + .trip-type-label {
+    border-color: var(--gold); background: rgba(200,151,58,0.08); color: var(--gold);
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%; background: var(--gold); color: #fff;
+    border: none; border-radius: 10px; padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+    cursor: none; transition: background 0.2s, transform 0.15s;
+    margin-top: 1.5rem; letter-spacing: 0.02em;
+  }
+  .submit-btn:hover { background: var(--rust); transform: translateY(-2px); }
+
+  /* SUCCESS */
+  .success-msg {
+    display: none; text-align: center; padding: 2.5rem 1rem;
+  }
+  .success-msg .check { font-size: 3.5rem; margin-bottom: 1rem; }
+  .success-msg h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--dark); margin-bottom: 0.5rem; }
+  .success-msg p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .info-card {
+    background: #fff; border-radius: 16px; padding: 1.8rem;
+    box-shadow: 0 4px 20px rgba(26,18,9,0.08), 0 0 0 1px var(--border);
+  }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); margin-bottom: 1.2rem; }
+
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 0.9rem;
+    padding: 0.8rem 0; border-bottom: 1px solid #f0e8d8;
+  }
+  .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .contact-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .contact-item strong { display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.2rem; }
+  .contact-item a { color: var(--dark); text-decoration: none; font-weight: 500; font-size: 0.93rem; transition: color 0.2s; }
+  .contact-item a:hover { color: var(--gold); }
+  .contact-item span { color: var(--dark); font-weight: 500; font-size: 0.93rem; }
+
+  .destinations-card { background: var(--navy); border-radius: 16px; padding: 1.8rem; color: #fff; }
+  .destinations-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1.2rem; }
+  .dest-tag {
+    display: inline-block; background: rgba(200,151,58,0.2);
+    border: 1px solid rgba(200,151,58,0.35);
+    color: var(--gold-light); font-size: 0.78rem; font-weight: 600;
+    padding: 0.3rem 0.8rem; border-radius: 100px; margin: 0.25rem;
+    cursor: none; transition: background 0.2s;
+  }
+  .dest-tag:hover { background: rgba(200,151,58,0.35); }
+
+  .why-card { background: var(--cream); border-radius: 16px; padding: 1.8rem; border: 1px solid var(--border); }
+  .why-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); margin-bottom: 1.2rem; }
+  .why-item { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1rem; }
+  .why-item:last-child { margin-bottom: 0; }
+  .why-icon { width: 36px; height: 36px; background: rgba(200,151,58,0.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .why-item div strong { display: block; font-size: 0.88rem; font-weight: 600; color: var(--dark); margin-bottom: 0.15rem; }
+  .why-item div span { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* FOOTER */
+  .booking-footer { background: var(--dark); color: rgba(255,255,255,0.45); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .booking-footer .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; }
+  .booking-footer .footer-logo span { color: var(--gold); }
+  .booking-footer p { font-size: 0.82rem; }
+
+  @media (max-width: 900px) { .booking-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .trip-type-grid { grid-template-columns: 1fr 1fr; }
+    .booking-hero { height: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo"><span>Route</span><span>Master</span></a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<!-- HERO BANNER -->
+<div class="booking-hero">
+  <img src="https://images.unsplash.com/photo-1609766857929-1e1e0ce9e96a?w=1400&q=90&auto=format&fit=crop" alt="Western Ghats Maharashtra">
+  <div class="booking-hero-content">
+    <div class="badge">✦ Maharashtra Travel</div>
+    <h1>Book Your Dream Trip</h1>
+    <p>Fill in your details and our team will get back to you within 24 hours with the best plan for you.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="booking-layout">
+
+  <!-- ENQUIRY FORM -->
+  <div class="form-card" id="formCard">
+    <h2>Send an Enquiry</h2>
+    <p class="subtitle">Tell us about your trip and we'll craft the perfect itinerary for you. No booking fee — just reach out!</p>
+
+    <div id="enquiryForm">
+      <!-- TRIP TYPE -->
+      <div class="form-section-title">Trip Type</div>
+      <div class="trip-type-grid">
+        <div>
+          <input type="radio" name="tripType" id="typeTour" value="Tour Package" class="trip-type-option" checked>
+          <label for="typeTour" class="trip-type-label"><span class="icon">🏕️</span>Tour Package</label>
+        </div>
+        <div>
+          <input type="radio" name="tripType" id="typeCab" value="Intercity Cab" class="trip-type-option">
+          <label for="typeCab" class="trip-type-label"><span class="icon">🚗</span>Intercity Cab</label>
+        </div>
+        <div>
+          <input type="radio" name="tripType" id="typeCustom" value="Custom Trip" class="trip-type-option">
+          <label for="typeCustom" class="trip-type-label"><span class="icon">✨</span>Custom Trip</label>
+        </div>
+      </div>
+
+      <!-- PERSONAL INFO -->
+      <div class="form-section-title">Your Details</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fname">First Name *</label>
+          <input type="text" id="fname" placeholder="Rahul" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name *</label>
+          <input type="text" id="lname" placeholder="Sharma" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" placeholder="rahul@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+        </div>
+        <div class="form-group">
+          <label for="city">Your City</label>
+          <input type="text" id="city" placeholder="Pune / Mumbai / Nagpur…">
+        </div>
+        <div class="form-group">
+          <label for="travelers">No. of Travellers *</label>
+          <input type="number" id="travelers" min="1" max="50" placeholder="2" required>
+        </div>
+      </div>
+
+      <!-- TRIP DETAILS -->
+      <div class="form-section-title">Trip Details</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="destination">Preferred Destination *</label>
+          <select id="destination">
+            <option value="">Select a destination…</option>
+            <option>Tadoba – Wildlife Safari</option>
+            <option>Konkan – Beach Tour</option>
+            <option>Bhigwan – Birdwatching</option>
+            <option>Western Ghats – Trekking</option>
+            <option>Lonavala – Hill Station</option>
+            <option>Mahabaleshwar – Getaway</option>
+            <option>Pune to Mumbai – Intercity Cab</option>
+            <option>Mumbai to Pune – Intercity Cab</option>
+            <option>Custom / Multiple Destinations</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="startDate">Travel Start Date *</label>
+          <input type="date" id="startDate" required>
+        </div>
+        <div class="form-group">
+          <label for="endDate">Travel End Date</label>
+          <input type="date" id="endDate">
+        </div>
+        <div class="form-group full">
+          <label for="budget">Approximate Budget (per person)</label>
+          <select id="budget">
+            <option value="">Select budget range…</option>
+            <option>Under ₹2,000</option>
+            <option>₹2,000 – ₹5,000</option>
+            <option>₹5,000 – ₹10,000</option>
+            <option>₹10,000 – ₹20,000</option>
+            <option>₹20,000+</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="message">Additional Requirements / Message</label>
+          <textarea id="message" placeholder="Tell us any special requirements, preferences, pickup location, accessibility needs, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- HOW DID YOU FIND US -->
+      <div class="form-section-title">How Did You Hear About Us?</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <select id="source">
+            <option value="">Select…</option>
+            <option>Google Search</option>
+            <option>Instagram / Facebook</option>
+            <option>Friend / Family Referral</option>
+            <option>WhatsApp</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()">✦ Send My Enquiry</button>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div class="success-msg" id="successMsg">
+      <div class="check">🎉</div>
+      <h3>Enquiry Received!</h3>
+      <p>Thank you for reaching out. Our team will review your enquiry and call or WhatsApp you within <strong>24 hours</strong> to discuss your perfect Maharashtra trip.</p>
+      <br>
+      <p style="font-size:0.85rem; color:#C8973A;">For urgent bookings, call us directly: <strong>+91 98765 43210</strong></p>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- CONTACT -->
+    <div class="info-card">
+      <h3>Contact Us Directly</h3>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <strong>Phone / WhatsApp</strong>
+          <a href="tel:9876543210">+91 98765 43210</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <strong>Email</strong>
+          <a href="mailto:hello@routemaster.in">hello@routemaster.in</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <strong>Working Hours</strong>
+          <span>Mon–Sun, 8 AM – 9 PM</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <strong>Base Location</strong>
+          <span>Pune, Maharashtra</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESTINATIONS -->
+    <div class="destinations-card">
+      <h3>We Cover All of Maharashtra</h3>
+      <div>
+        <span class="dest-tag">🐯 Tadoba</span>
+        <span class="dest-tag">🏖️ Konkan</span>
+        <span class="dest-tag">🦩 Bhigwan</span>
+        <span class="dest-tag">⛰️ Western Ghats</span>
+        <span class="dest-tag">🌿 Lonavala</span>
+        <span class="dest-tag">🍓 Mahabaleshwar</span>
+        <span class="dest-tag">🌊 Ratnagiri</span>
+        <span class="dest-tag">🏰 Ajanta</span>
+        <span class="dest-tag">🛕 Shirdi</span>
+        <span class="dest-tag">🏔️ Sahyadri</span>
+        <span class="dest-tag">🚗 Pune–Mumbai</span>
+      </div>
+    </div>
+
+    <!-- WHY CHOOSE US -->
+    <div class="why-card">
+      <h3>Why Choose RouteMaster?</h3>
+      <div class="why-item">
+        <div class="why-icon">🛡️</div>
+        <div><strong>Safe & Reliable</strong><span>Verified drivers and insured vehicles always</span></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">💰</div>
+        <div><strong>Best Prices</strong><span>Transparent pricing, no hidden charges</span></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🗺️</div>
+        <div><strong>Local Expertise</strong><span>Guides who know Maharashtra inside out</span></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📱</div>
+        <div><strong>24/7 Support</strong><span>We're always just a call or WhatsApp away</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="booking-footer">
+  <div class="footer-logo">Route<span>Master</span></div>
+  <p>© 2026 RouteMaster. All rights reserved.</p>
+  <a href="index.html" style="color:rgba(255,255,255,0.45); font-size:0.82rem; text-decoration:none;">← Back to Home</a>
+</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my, rx = mx, ry = my;
+  window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cx += (mx-cx)*0.18; cy += (my-cy)*0.18;
+    rx += (mx-rx)*0.08; ry += (my-ry)*0.08;
+    cursor.style.left = (cx-7)+'px'; cursor.style.top = (cy-7)+'px';
+    ring.style.left = (rx-20)+'px'; ring.style.top = (ry-20)+'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  document.querySelectorAll('a,button,input,select,textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.background='#B84A1E'; cursor.style.transform='scale(1.8)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.background='#C8973A'; cursor.style.transform='scale(1)'; });
+  });
+
+  // Pre-fill destination from URL param
+  const params = new URLSearchParams(window.location.search);
+  const dest = params.get('destination');
+  if (dest) {
+    const sel = document.getElementById('destination');
+    for (let opt of sel.options) {
+      if (opt.text.toLowerCase().includes(dest.toLowerCase())) { opt.selected = true; break; }
+    }
+  }
+
+  // Set min date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('startDate').min = today;
+  document.getElementById('endDate').min = today;
+
+  function submitForm() {
+    const fname = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const travelers = document.getElementById('travelers').value.trim();
+    const dest = document.getElementById('destination').value;
+    const startDate = document.getElementById('startDate').value;
+
+    if (!fname || !phone || !email || !travelers || !dest || !startDate) {
+      alert('Please fill in all required fields (*)');
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    // Show success
+    document.getElementById('enquiryForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
