@@ -19,6 +19,7 @@
   .cursor { position: fixed; width: 14px; height: 14px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: multiply; transition: background 0.2s, transform 0.15s; }
   .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1.5px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; opacity: 0.6; }
 
+  /* NAV */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 72px; background: rgba(250,247,242,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
   nav.scrolled { box-shadow: 0 4px 30px rgba(26,18,9,0.09); }
   .logo { font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
@@ -31,7 +32,7 @@
   .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
   .nav-cta { background: var(--gold) !important; color: #fff !important; padding: 0.5rem 1.4rem !important; border-radius: 4px; font-weight: 600 !important; }
   .nav-cta::after { display: none !important; }
-  .nav-cta:hover { background: var(--rust) !important; transform: translateY(-1px); color: #fff !important; }
+  .nav-cta:hover { background: var(--rust) !important; transform: translateY(-1px); }
 
   /* HERO */
   .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 72px 5vw 0; position: relative; overflow: hidden; gap: 4rem; }
@@ -52,6 +53,7 @@
   .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; border: 1.5px solid var(--gold); color: var(--gold); padding: 0.85rem 2rem; border-radius: 6px; font-weight: 600; font-size: 0.92rem; text-decoration: none; cursor: none; transition: all 0.2s; }
   .btn-outline:hover { background: var(--gold); color: #fff; transform: translateY(-2px); }
 
+  /* SEARCH CARD */
   .search-card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow), 0 0 0 1px var(--border); }
   .search-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 1.4rem; color: var(--dark); }
   .search-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
@@ -66,33 +68,77 @@
   .trust-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 500; color: var(--text-muted); }
   .trust-badge span { color: #2a7a1e; font-size: 1rem; }
 
+  /* SECTIONS */
   .section-wrap { padding: 6rem 5vw; }
   .section-label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
   .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: var(--dark); line-height: 1.2; margin-bottom: 0.6rem; }
   .section-sub { font-size: 1rem; color: var(--text-muted); max-width: 500px; line-height: 1.65; margin-bottom: 2.8rem; }
   .divider { width: 60px; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 1.2rem; }
 
-  /* TOUR CARDS */
+  /* =====================
+     TOUR CARDS — CSS background-image (never blocked)
+  ===================== */
   .tours-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-  .tour-card { border-radius: 14px; overflow: hidden; position: relative; cursor: none; aspect-ratio: 4/5; box-shadow: 0 4px 20px rgba(26,18,9,0.1); transition: transform 0.3s, box-shadow 0.3s; background: #e8dfd0; }
-  .tour-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(26,18,9,0.18); }
-  .tour-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
-  .tour-card:hover img { transform: scale(1.05); }
-  .tour-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,18,9,0.88) 0%, rgba(26,18,9,0.1) 55%, transparent 100%); }
-  .tour-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; color: #fff; }
-  .tour-tag { display: inline-block; background: var(--gold); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 0.6rem; }
-  .tour-info h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .tour-info p { font-size: 0.85rem; opacity: 0.85; }
 
-  /* CAB ROUTES */
+  .tour-card {
+    border-radius: 14px; overflow: hidden;
+    position: relative; cursor: none;
+    height: 420px;
+    box-shadow: 0 4px 20px rgba(26,18,9,0.12);
+    transition: transform 0.35s, box-shadow 0.35s;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .tour-card:hover { transform: translateY(-6px); box-shadow: 0 24px 55px rgba(26,18,9,0.22); }
+  .tour-card .bg-zoom {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.55s ease;
+  }
+  .tour-card:hover .bg-zoom { transform: scale(1.07); }
+
+  /* Individual card backgrounds using picsum with fixed seeds */
+  .card-tadoba      { background-image: url('https://picsum.photos/seed/tiger123/600/800'); }
+  .card-konkan      { background-image: url('https://picsum.photos/seed/beach456/600/800'); }
+  .card-bhigwan     { background-image: url('https://picsum.photos/seed/lake789/600/800'); }
+  .card-ghats       { background-image: url('https://picsum.photos/seed/mountain321/600/800'); }
+  .card-lonavala    { background-image: url('https://picsum.photos/seed/valley654/600/800'); }
+  .card-mahabal     { background-image: url('https://picsum.photos/seed/hills987/600/800'); }
+
+  .tour-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,8,4,0.92) 0%, rgba(10,8,4,0.35) 50%, rgba(0,0,0,0.05) 100%);
+  }
+  .tour-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.6rem; color: #fff; z-index: 2; }
+  .tour-tag { display: inline-block; background: var(--gold); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.28rem 0.75rem; border-radius: 100px; margin-bottom: 0.65rem; }
+  .tour-info h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .tour-info p { font-size: 0.85rem; opacity: 0.82; }
+
+  /* CAB ROUTES — same CSS bg trick */
   .routes-section { background: var(--dark); }
   .routes-section .section-label { color: var(--gold-light); }
   .routes-section .section-title { color: #fff; }
   .routes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-  .route-card { border-radius: 14px; overflow: hidden; cursor: none; transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); }
+
+  .route-card {
+    border-radius: 14px; overflow: hidden; cursor: none;
+    transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.08);
+  }
   .route-card:hover { transform: translateY(-4px); }
-  .route-img { width: 100%; height: 200px; object-fit: cover; display: block; filter: brightness(0.82); transition: filter 0.3s; }
-  .route-card:hover .route-img { filter: brightness(1); }
+
+  .route-img-bg {
+    height: 200px;
+    background-size: cover; background-position: center;
+    transition: filter 0.3s, transform 0.4s;
+    filter: brightness(0.78);
+  }
+  .route-card:hover .route-img-bg { filter: brightness(1); transform: scale(1.03); }
+
+  .route-pune-mumbai { background-image: url('https://picsum.photos/seed/highway42/600/300'); }
+  .route-mumbai-pune { background-image: url('https://picsum.photos/seed/city88/600/300'); }
+  .route-new        { background-image: url('https://picsum.photos/seed/road55/600/300'); }
+
   .route-info { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 1.3rem 1.4rem; }
   .route-from-to { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
   .city { font-size: 1.05rem; font-weight: 600; color: #fff; }
@@ -100,26 +146,45 @@
   .route-detail { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
   .route-badge { display: inline-block; background: rgba(200,151,58,0.2); color: var(--gold-light); font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.7rem; border-radius: 100px; border: 1px solid rgba(200,151,58,0.3); margin-top: 0.6rem; }
 
-  /* DESTINATIONS MOSAIC */
+  /* DESTINATIONS MOSAIC — CSS bg */
   .mosaic { display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(2,240px); gap: 0.8rem; }
-  .mosaic-item { border-radius: 10px; overflow: hidden; cursor: none; background: #d8cfc4; }
+  .mosaic-item {
+    border-radius: 10px; overflow: hidden; cursor: none;
+    background-size: cover; background-position: center;
+    transition: transform 0.4s, filter 0.3s; filter: brightness(0.85);
+  }
   .mosaic-item:first-child { grid-column: 1; grid-row: 1/3; }
-  .mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s, filter 0.3s; filter: brightness(0.88); display: block; }
-  .mosaic-item:hover img { transform: scale(1.06); filter: brightness(1); }
+  .mosaic-item:hover { transform: scale(1.03); filter: brightness(1); }
 
-  /* GALLERY */
+  .m1 { background-image: url('https://picsum.photos/seed/sahyadri11/500/600'); }
+  .m2 { background-image: url('https://picsum.photos/seed/konkan22/500/300'); }
+  .m3 { background-image: url('https://picsum.photos/seed/birds33/500/300'); }
+  .m4 { background-image: url('https://picsum.photos/seed/falls44/500/300'); }
+  .m5 { background-image: url('https://picsum.photos/seed/lake55/500/300'); }
+
+  /* GALLERY — CSS bg */
   .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-auto-rows: 200px; gap: 0.8rem; }
-  .gallery-item { border-radius: 10px; overflow: hidden; cursor: none; background: #d8cfc4; }
+  .gallery-item {
+    border-radius: 10px; overflow: hidden; cursor: none;
+    background-size: cover; background-position: center;
+    transition: transform 0.4s, filter 0.3s; filter: brightness(0.9);
+  }
   .gallery-item:nth-child(3) { grid-column: span 2; }
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block; }
-  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-item:hover { transform: scale(1.04); filter: brightness(1.05); }
+
+  .g1 { background-image: url('https://picsum.photos/seed/ghat1/400/300'); }
+  .g2 { background-image: url('https://picsum.photos/seed/beach2/400/300'); }
+  .g3 { background-image: url('https://picsum.photos/seed/valley3/800/300'); }
+  .g4 { background-image: url('https://picsum.photos/seed/bird4/400/300'); }
+  .g5 { background-image: url('https://picsum.photos/seed/green5/400/300'); }
+  .g6 { background-image: url('https://picsum.photos/seed/sunset6/400/300'); }
 
   /* GUIDES */
   .guides-section { background: #F5EEE3; }
   .guides-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1.5rem; }
   .guide-card { background: #fff; border-radius: 14px; padding: 1.8rem 1.4rem; text-align: center; box-shadow: 0 2px 16px rgba(26,18,9,0.07); transition: transform 0.25s, box-shadow 0.25s; cursor: none; }
   .guide-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(26,18,9,0.12); }
-  .guide-card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto; }
+  .guide-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin: 0 auto 1rem; background-size: cover; background-position: center; }
   .guide-card h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); margin-bottom: 0.25rem; }
   .guide-card p { font-size: 0.82rem; color: var(--text-muted); }
   .guide-stars { color: var(--gold); font-size: 0.8rem; margin-top: 0.5rem; }
@@ -135,6 +200,7 @@
   .stat-box .number { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--gold-light); line-height: 1; margin-bottom: 0.3rem; }
   .stat-box .label { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
 
+  /* FOOTER */
   footer { background: var(--dark); color: rgba(255,255,255,0.45); padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
   .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; }
   .footer-logo span { color: var(--gold); }
@@ -228,38 +294,32 @@
   </div>
   <div class="tours-grid reveal">
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/TigerBengal7.jpg/800px-TigerBengal7.jpg" alt="Tadoba Tiger Reserve" loading="lazy">
+    <div class="tour-card card-tadoba">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Wildlife</div><h3>Tadoba</h3><p>Tiger safaris & jungle stays</p></div>
     </div>
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Ganpatipule_beach.jpg/800px-Ganpatipule_beach.jpg" alt="Konkan Beach" loading="lazy">
+    <div class="tour-card card-konkan">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Coastal</div><h3>Konkan</h3><p>Pristine beaches & fresh seafood</p></div>
     </div>
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Greater_Flamingos_Bhigwan.jpg/800px-Greater_Flamingos_Bhigwan.jpg" alt="Bhigwan Flamingos" loading="lazy">
+    <div class="tour-card card-bhigwan">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Nature</div><h3>Bhigwan</h3><p>Flamingos & birdwatching haven</p></div>
     </div>
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Dudhsagar_Falls_Goa_1.jpg/600px-Dudhsagar_Falls_Goa_1.jpg" alt="Western Ghats Waterfall" loading="lazy">
+    <div class="tour-card card-ghats">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Hills</div><h3>Western Ghats</h3><p>Misty valleys & cascading waterfalls</p></div>
     </div>
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Lonavala_Lake.jpg/800px-Lonavala_Lake.jpg" alt="Lonavala" loading="lazy">
+    <div class="tour-card card-lonavala">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Hill Station</div><h3>Lonavala</h3><p>Lush valleys & scenic viewpoints</p></div>
     </div>
 
-    <div class="tour-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Mahabaleshwar_sunset.jpg/800px-Mahabaleshwar_sunset.jpg" alt="Mahabaleshwar" loading="lazy">
+    <div class="tour-card card-mahabal">
       <div class="tour-overlay"></div>
       <div class="tour-info"><div class="tour-tag">Getaway</div><h3>Mahabaleshwar</h3><p>Strawberry farms & cool mountain air</p></div>
     </div>
@@ -278,7 +338,7 @@
   <div class="routes-grid reveal">
 
     <div class="route-card">
-      <img class="route-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Mumbai_Pune_Expressway.jpg/800px-Mumbai_Pune_Expressway.jpg" alt="Pune Mumbai Expressway" loading="lazy">
+      <div class="route-img-bg route-pune-mumbai"></div>
       <div class="route-info">
         <div class="route-from-to"><span class="city">Pune</span><span class="route-arrow">→</span><span class="city">Mumbai</span></div>
         <p class="route-detail">Pick-up in Pune · ~3.5 hrs</p>
@@ -287,7 +347,7 @@
     </div>
 
     <div class="route-card">
-      <img class="route-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Mumbai_Skyline_at_Night.jpg/800px-Mumbai_Skyline_at_Night.jpg" alt="Mumbai City" loading="lazy">
+      <div class="route-img-bg route-mumbai-pune"></div>
       <div class="route-info">
         <div class="route-from-to"><span class="city">Mumbai</span><span class="route-arrow">→</span><span class="city">Pune</span></div>
         <p class="route-detail">Pick-up in Mumbai · ~3.5 hrs</p>
@@ -296,7 +356,7 @@
     </div>
 
     <div class="route-card" style="opacity:0.55;">
-      <img class="route-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Sahyadri_mountain_range.jpg/800px-Sahyadri_mountain_range.jpg" alt="Maharashtra Hills" loading="lazy">
+      <div class="route-img-bg route-new"></div>
       <div class="route-info">
         <div class="route-from-to"><span class="city">New Routes</span></div>
         <p class="route-detail">Expanding across Maharashtra</p>
@@ -316,21 +376,11 @@
     <p class="section-sub">Ghats, coasts, forests, and forts — Maharashtra has it all.</p>
   </div>
   <div class="mosaic reveal">
-    <div class="mosaic-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Sahyadri_mountain_range.jpg/800px-Sahyadri_mountain_range.jpg" alt="Sahyadri Western Ghats" loading="lazy">
-    </div>
-    <div class="mosaic-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Ganpatipule_beach.jpg/800px-Ganpatipule_beach.jpg" alt="Konkan Coast" loading="lazy">
-    </div>
-    <div class="mosaic-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Greater_Flamingos_Bhigwan.jpg/800px-Greater_Flamingos_Bhigwan.jpg" alt="Bhigwan Birds" loading="lazy">
-    </div>
-    <div class="mosaic-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Dudhsagar_Falls_Goa_1.jpg/600px-Dudhsagar_Falls_Goa_1.jpg" alt="Waterfall Ghats" loading="lazy">
-    </div>
-    <div class="mosaic-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Lonavala_Lake.jpg/800px-Lonavala_Lake.jpg" alt="Lonavala Lake" loading="lazy">
-    </div>
+    <div class="mosaic-item m1"></div>
+    <div class="mosaic-item m2"></div>
+    <div class="mosaic-item m3"></div>
+    <div class="mosaic-item m4"></div>
+    <div class="mosaic-item m5"></div>
   </div>
 </div>
 
@@ -343,24 +393,12 @@
     <p class="section-sub">Captured moments from Maharashtra's most breathtaking landscapes.</p>
   </div>
   <div class="gallery-grid reveal">
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Sahyadri_mountain_range.jpg/800px-Sahyadri_mountain_range.jpg" alt="Sahyadri Ghats" loading="lazy">
-    </div>
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Ganpatipule_beach.jpg/800px-Ganpatipule_beach.jpg" alt="Konkan Beach" loading="lazy">
-    </div>
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Dudhsagar_Falls_Goa_1.jpg/600px-Dudhsagar_Falls_Goa_1.jpg" alt="Waterfall Valley" loading="lazy">
-    </div>
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Greater_Flamingos_Bhigwan.jpg/800px-Greater_Flamingos_Bhigwan.jpg" alt="Flamingos Bhigwan" loading="lazy">
-    </div>
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Lonavala_Lake.jpg/800px-Lonavala_Lake.jpg" alt="Lonavala Lake" loading="lazy">
-    </div>
-    <div class="gallery-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Mahabaleshwar_sunset.jpg/800px-Mahabaleshwar_sunset.jpg" alt="Mahabaleshwar Sunset" loading="lazy">
-    </div>
+    <div class="gallery-item g1"></div>
+    <div class="gallery-item g2"></div>
+    <div class="gallery-item g3"></div>
+    <div class="gallery-item g4"></div>
+    <div class="gallery-item g5"></div>
+    <div class="gallery-item g6"></div>
   </div>
 </div>
 
@@ -374,15 +412,15 @@
   </div>
   <div class="guides-grid reveal">
     <div class="guide-card">
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ravi">
+      <div class="guide-avatar" style="background-image:url('https://randomuser.me/api/portraits/men/32.jpg')"></div>
       <h4>Ravi</h4><p>Wildlife & Safari Expert</p><div class="guide-stars">★★★★★</div>
     </div>
     <div class="guide-card">
-      <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya">
+      <div class="guide-avatar" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg')"></div>
       <h4>Priya</h4><p>Coastal Tour Specialist</p><div class="guide-stars">★★★★★</div>
     </div>
     <div class="guide-card">
-      <img src="https://randomuser.me/api/portraits/men/58.jpg" alt="Suresh">
+      <div class="guide-avatar" style="background-image:url('https://randomuser.me/api/portraits/men/58.jpg')"></div>
       <h4>Suresh</h4><p>Ghat & Trekking Guide</p><div class="guide-stars">★★★★☆</div>
     </div>
   </div>
@@ -409,7 +447,6 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer id="contact">
   <div class="footer-logo">Route<span>Master</span></div>
   <p>© 2026 RouteMaster. All rights reserved.</p>
@@ -427,14 +464,13 @@
   const ring = document.getElementById('cursorRing');
   let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my, rx = mx, ry = my;
   window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
-  function animCursor() {
+  (function animCursor() {
     cx += (mx-cx)*0.18; cy += (my-cy)*0.18;
     rx += (mx-rx)*0.08; ry += (my-ry)*0.08;
     cursor.style.left = (cx-7)+'px'; cursor.style.top = (cy-7)+'px';
     ring.style.left = (rx-20)+'px'; ring.style.top = (ry-20)+'px';
     requestAnimationFrame(animCursor);
-  }
-  animCursor();
+  })();
 
   document.querySelectorAll('a,button,.tour-card,.route-card,.guide-card').forEach(el => {
     el.addEventListener('mouseenter', () => { cursor.style.background='#B84A1E'; cursor.style.transform='scale(2)'; });
@@ -443,24 +479,16 @@
 
   window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', scrollY > 30));
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); observer.unobserve(e.target); } });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); } });
   }, {threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   function doSearch() {
     const p = document.getElementById('place').value.trim();
     if(!p){ alert('Please enter a destination'); return; }
     window.location.href = 'booking.html?destination='+encodeURIComponent(p);
   }
-
-  // Fallback: if any image fails to load, show a gradient placeholder
-  document.querySelectorAll('img').forEach(img => {
-    img.onerror = function() {
-      this.style.display = 'none';
-      this.parentElement.style.background = 'linear-gradient(135deg, #2d4a1e, #4a7a25)';
-    };
-  });
 </script>
 </body>
 </html>
