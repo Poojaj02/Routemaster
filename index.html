@@ -7,234 +7,311 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #FAF7F2; --dark: #1A1209; --gold: #C8973A;
-    --gold-light: #E8B55A; --rust: #B84A1E;
-    --navy: #0F2044; --text: #2C1F0E; --text-muted: #6B5840;
-    --border: rgba(200,151,58,0.2); --shadow: 0 8px 40px rgba(26,18,9,0.12);
+    --cream:#FAF7F2; --dark:#1A1209; --gold:#C8973A;
+    --gold-light:#E8B55A; --rust:#B84A1E;
+    --navy:#0F2044; --text:#2C1F0E; --text-muted:#6B5840;
+    --border:rgba(200,151,58,0.2); --shadow:0 8px 40px rgba(26,18,9,0.12);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; cursor: none; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
 
-  .cursor { position: fixed; width: 14px; height: 14px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: multiply; transition: background 0.2s, transform 0.15s; }
-  .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1.5px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; opacity: 0.6; }
 
-  /* NAV */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 72px; background: rgba(250,247,242,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
-  nav.scrolled { box-shadow: 0 4px 30px rgba(26,18,9,0.09); }
-  .logo { font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900; letter-spacing: -0.5px; text-decoration: none; }
-  .logo span:first-child { color: var(--dark); }
-  .logo span:last-child { color: var(--gold); }
-  .nav-links { display: flex; gap: 2.2rem; align-items: center; }
-  .nav-links a { font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; position: relative; transition: color 0.2s; }
-  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1.5px; background: var(--gold); transform: scaleX(0); transform-origin: right; transition: transform 0.3s ease; }
-  .nav-links a:hover { color: var(--dark); }
-  .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
-  .nav-cta { background: var(--gold) !important; color: #fff !important; padding: 0.5rem 1.4rem !important; border-radius: 4px; font-weight: 600 !important; }
-  .nav-cta::after { display: none !important; }
-  .nav-cta:hover { background: var(--rust) !important; transform: translateY(-1px); }
 
-  /* HERO */
-  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 72px 5vw 0; position: relative; overflow: hidden; gap: 4rem; }
-  .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #FAF7F2 52%, #F0E8D8 100%); z-index: 0; }
-  .hero-bg::before { content: ''; position: absolute; width: 600px; height: 600px; top: -100px; right: -100px; background: radial-gradient(circle, rgba(200,151,58,0.13) 0%, transparent 70%); border-radius: 50%; }
-  .hero-content { position: relative; z-index: 1; animation: fadeUp 0.9s ease forwards; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(200,151,58,0.12); border: 1px solid var(--border); border-radius: 100px; padding: 0.35rem 1rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
-  .hero-badge::before { content: '✦'; font-size: 0.6rem; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); font-weight: 900; line-height: 1.1; color: var(--dark); margin-bottom: 1.2rem; }
-  .hero h1 em { font-style: normal; color: var(--gold); position: relative; display: inline-block; }
-  .hero h1 em::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 3px; background: var(--gold); border-radius: 2px; opacity: 0.35; }
-  .hero p { font-size: 1.05rem; line-height: 1.7; color: var(--text-muted); max-width: 440px; margin-bottom: 2rem; }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .hero-visual { position: relative; z-index: 1; animation: fadeUp 0.9s 0.2s ease both; }
+  /* ═══════════ NAV ═══════════ */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px;background:rgba(250,247,242,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
+  nav.scrolled{box-shadow:0 4px 30px rgba(26,18,9,.09);}
+  .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;letter-spacing:-.5px;text-decoration:none;flex-shrink:0;}
+  .logo span:first-child{color:var(--dark);}
+  .logo span:last-child{color:var(--gold);}
 
-  .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--dark); color: #fff; padding: 0.85rem 2rem; border-radius: 6px; font-weight: 600; font-size: 0.92rem; text-decoration: none; cursor: none; transition: background 0.2s, transform 0.15s; }
-  .btn-primary:hover { background: var(--rust); transform: translateY(-2px); }
-  .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; border: 1.5px solid var(--gold); color: var(--gold); padding: 0.85rem 2rem; border-radius: 6px; font-weight: 600; font-size: 0.92rem; text-decoration: none; cursor: none; transition: all 0.2s; }
-  .btn-outline:hover { background: var(--gold); color: #fff; transform: translateY(-2px); }
+  /* Desktop nav links */
+  .nav-links{display:flex;gap:2rem;align-items:center;}
+  .nav-links a{font-size:.85rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;position:relative;transition:color .2s;white-space:nowrap;}
+  .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .3s ease;}
+  .nav-links a:hover{color:var(--dark);}
+  .nav-links a:hover::after{transform:scaleX(1);transform-origin:left;}
+  .nav-cta{background:var(--gold)!important;color:#fff!important;padding:.45rem 1.2rem!important;border-radius:4px;font-weight:600!important;}
+  .nav-cta::after{display:none!important;}
+  .nav-cta:hover{background:var(--rust)!important;transform:translateY(-1px);}
 
-  /* SEARCH CARD */
-  .search-card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow), 0 0 0 1px var(--border); }
-  .search-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 1.4rem; color: var(--dark); }
-  .search-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-  .search-field { display: flex; flex-direction: column; gap: 0.3rem; }
-  .search-field.full { grid-column: 1/-1; }
-  .search-field label { font-size: 0.73rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
-  .search-field input { border: 1.5px solid #e5ddd0; border-radius: 8px; padding: 0.7rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--text); background: var(--cream); outline: none; transition: border-color 0.2s; cursor: none; }
-  .search-field input:focus { border-color: var(--gold); }
-  .search-btn { grid-column: 1/-1; background: var(--gold); color: #fff; border: none; border-radius: 8px; padding: 0.9rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: none; transition: background 0.2s, transform 0.15s; }
-  .search-btn:hover { background: var(--rust); transform: translateY(-1px); }
-  .trust-badges { display: flex; gap: 1.5rem; margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid #ede5d8; }
-  .trust-badge { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 500; color: var(--text-muted); }
-  .trust-badge span { color: #2a7a1e; font-size: 1rem; }
+  /* Hamburger */
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+  .hamburger span{width:24px;height:2px;background:var(--dark);border-radius:2px;transition:all .3s;}
+  .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
 
-  /* SECTIONS */
-  .section-wrap { padding: 6rem 5vw; }
-  .section-label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: var(--dark); line-height: 1.2; margin-bottom: 0.6rem; }
-  .section-sub { font-size: 1rem; color: var(--text-muted); max-width: 500px; line-height: 1.65; margin-bottom: 2.8rem; }
-  .divider { width: 60px; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 1.2rem; }
+  /* Mobile menu */
+  .mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(250,247,242,.98);backdrop-filter:blur(20px);padding:1.5rem 5vw 2rem;border-bottom:1px solid var(--border);z-index:999;flex-direction:column;gap:1rem;box-shadow:0 8px 30px rgba(26,18,9,.1);}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:1rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;padding:.6rem 0;border-bottom:1px solid var(--border);transition:color .2s;}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu a:hover{color:var(--gold);}
+  .mobile-menu .m-cta{background:var(--gold);color:#fff!important;padding:.75rem 1.5rem;border-radius:6px;text-align:center;border-bottom:none!important;font-weight:600;}
 
-  /* =====================
-     TOUR CARDS — CSS background-image (never blocked)
-  ===================== */
-  .tours-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  /* ═══════════ HERO ═══════════ */
+  .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:68px 5vw 4rem;position:relative;overflow:hidden;gap:3rem;}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#FAF7F2 52%,#F0E8D8 100%);z-index:0;}
+  .hero-bg::before{content:'';position:absolute;width:500px;height:500px;top:-80px;right:-80px;background:radial-gradient(circle,rgba(200,151,58,.13) 0%,transparent 70%);border-radius:50%;}
+  .hero-content{position:relative;z-index:1;animation:fadeUp .9s ease forwards;}
+  .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,151,58,.12);border:1px solid var(--border);border-radius:100px;padding:.3rem .9rem;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+  .hero-badge::before{content:'✦';font-size:.55rem;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,4rem);font-weight:900;line-height:1.1;color:var(--dark);margin-bottom:1rem;}
+  .hero h1 em{font-style:normal;color:var(--gold);position:relative;display:inline-block;}
+  .hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--gold);border-radius:2px;opacity:.35;}
+  .hero p{font-size:1rem;line-height:1.7;color:var(--text-muted);max-width:440px;margin-bottom:1.8rem;}
+  .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
+  .hero-visual{position:relative;z-index:1;animation:fadeUp .9s .2s ease both;}
 
-  .tour-card {
-    border-radius: 14px; overflow: hidden;
-    position: relative; cursor: none;
-    height: 420px;
-    box-shadow: 0 4px 20px rgba(26,18,9,0.12);
-    transition: transform 0.35s, box-shadow 0.35s;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--dark);color:#fff;padding:.8rem 1.8rem;border-radius:6px;font-weight:600;font-size:.9rem;text-decoration:none;transition:background .2s,transform .15s;}
+  .btn-primary:hover{background:var(--rust);transform:translateY(-2px);}
+  .btn-outline{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--gold);color:var(--gold);padding:.8rem 1.8rem;border-radius:6px;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .2s;}
+  .btn-outline:hover{background:var(--gold);color:#fff;transform:translateY(-2px);}
+
+  /* Search card */
+  .search-card{background:#fff;border-radius:16px;padding:1.8rem;box-shadow:var(--shadow),0 0 0 1px var(--border);}
+  .search-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1.2rem;color:var(--dark);}
+  .search-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+  .search-field{display:flex;flex-direction:column;gap:.3rem;}
+  .search-field.full{grid-column:1/-1;}
+  .search-field label{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);}
+  .search-field input{border:1.5px solid #e5ddd0;border-radius:8px;padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s;width:100%;}
+  .search-field input:focus{border-color:var(--gold);}
+  .search-btn{grid-column:1/-1;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.85rem;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s;}
+  .search-btn:hover{background:var(--rust);transform:translateY(-1px);}
+  .trust-badges{display:flex;gap:1.2rem;margin-top:1.2rem;padding-top:1rem;border-top:1px solid #ede5d8;flex-wrap:wrap;}
+  .trust-badge{display:flex;align-items:center;gap:.4rem;font-size:.76rem;font-weight:500;color:var(--text-muted);}
+  .trust-badge span{color:#2a7a1e;}
+
+  /* ═══════════ SECTIONS ═══════════ */
+  .section-wrap{padding:5rem 5vw;}
+  .section-label{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:800;color:var(--dark);line-height:1.2;margin-bottom:.6rem;}
+  .section-sub{font-size:.95rem;color:var(--text-muted);max-width:500px;line-height:1.65;margin-bottom:2.5rem;}
+  .divider{width:55px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:1rem;}
+
+  /* ═══════════ TOUR CARDS ═══════════ */
+  .tours-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+  .tour-card{border-radius:14px;overflow:hidden;position:relative;height:400px;box-shadow:0 4px 20px rgba(26,18,9,.1);transition:transform .35s,box-shadow .35s;background-size:cover;background-position:center;background-repeat:no-repeat;}
+  .tour-card:hover{transform:translateY(-6px);box-shadow:0 24px 55px rgba(26,18,9,.22);}
+  .card-tadoba   {background-image:url('https://picsum.photos/seed/tiger123/600/800');}
+  .card-konkan   {background-image:url('https://picsum.photos/seed/beach456/600/800');}
+  .card-bhigwan  {background-image:url('https://picsum.photos/seed/lake789/600/800');}
+  .card-ghats    {background-image:url('https://picsum.photos/seed/mountain321/600/800');}
+  .card-lonavala {background-image:url('https://picsum.photos/seed/valley654/600/800');}
+  .card-mahabal  {background-image:url('https://picsum.photos/seed/hills987/600/800');}
+  .tour-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,8,4,.92) 0%,rgba(10,8,4,.25) 55%,transparent 100%);}
+  .tour-info{position:absolute;bottom:0;left:0;right:0;padding:1.4rem;color:#fff;z-index:2;}
+  .tour-tag{display:inline-block;background:var(--gold);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;margin-bottom:.55rem;}
+  .tour-info h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:.25rem;}
+  .tour-info p{font-size:.82rem;opacity:.82;}
+
+  /* ═══════════ CAB ROUTES ═══════════ */
+  .routes-section{background:var(--dark);}
+  .routes-section .section-label{color:var(--gold-light);}
+  .routes-section .section-title{color:#fff;}
+  .routes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+  .route-card{border-radius:14px;overflow:hidden;transition:transform .3s;border:1px solid rgba(255,255,255,.08);}
+  .route-card:hover{transform:translateY(-4px);}
+  .route-img-bg{height:180px;background-size:cover;background-position:center;transition:filter .3s;filter:brightness(.78);}
+  .route-card:hover .route-img-bg{filter:brightness(1);}
+  .route-pune-mumbai{background-image:url('https://picsum.photos/seed/highway42/600/300');}
+  .route-mumbai-pune{background-image:url('https://picsum.photos/seed/city88/600/300');}
+  .route-new        {background-image:url('https://picsum.photos/seed/road55/600/300');}
+  .route-info{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);padding:1.2rem 1.3rem;}
+  .route-from-to{display:flex;align-items:center;gap:.8rem;margin-bottom:.4rem;}
+  .city{font-size:1rem;font-weight:600;color:#fff;}
+  .route-arrow{color:var(--gold);font-size:1rem;}
+  .route-detail{font-size:.8rem;color:rgba(255,255,255,.5);}
+  .route-badge{display:inline-block;background:rgba(200,151,58,.2);color:var(--gold-light);font-size:.7rem;font-weight:600;padding:.2rem .7rem;border-radius:100px;border:1px solid rgba(200,151,58,.3);margin-top:.55rem;}
+
+  /* ═══════════ MOSAIC ═══════════ */
+  .mosaic{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,220px);gap:.8rem;}
+  .mosaic-item{border-radius:10px;background-size:cover;background-position:center;transition:transform .4s,filter .3s;filter:brightness(.85);}
+  .mosaic-item:first-child{grid-column:1;grid-row:1/3;}
+  .mosaic-item:hover{transform:scale(1.02);filter:brightness(1);}
+  .m1{background-image:url('https://picsum.photos/seed/sahyadri11/500/600');}
+  .m2{background-image:url('https://picsum.photos/seed/konkan22/500/300');}
+  .m3{background-image:url('https://picsum.photos/seed/birds33/500/300');}
+  .m4{background-image:url('https://picsum.photos/seed/falls44/500/300');}
+  .m5{background-image:url('https://picsum.photos/seed/lake55/500/300');}
+
+  /* ═══════════ GALLERY ═══════════ */
+  .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:180px;gap:.8rem;}
+  .gallery-item{border-radius:10px;background-size:cover;background-position:center;transition:transform .4s,filter .3s;filter:brightness(.9);}
+  .gallery-item:nth-child(3){grid-column:span 2;}
+  .gallery-item:hover{transform:scale(1.03);filter:brightness(1.05);}
+  .g1{background-image:url('https://picsum.photos/seed/ghat1/400/300');}
+  .g2{background-image:url('https://picsum.photos/seed/beach2/400/300');}
+  .g3{background-image:url('https://picsum.photos/seed/valley3/800/300');}
+  .g4{background-image:url('https://picsum.photos/seed/bird4/400/300');}
+  .g5{background-image:url('https://picsum.photos/seed/green5/400/300');}
+  .g6{background-image:url('https://picsum.photos/seed/sunset6/400/300');}
+
+  /* ═══════════ GUIDES ═══════════ */
+  .guides-section{background:#F5EEE3;}
+  .guides-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+  .guide-card{background:#fff;border-radius:14px;padding:1.8rem 1.4rem;text-align:center;box-shadow:0 2px 16px rgba(26,18,9,.07);transition:transform .25s,box-shadow .25s;}
+  .guide-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(26,18,9,.12);}
+  .guide-avatar{width:80px;height:80px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 1rem;background-size:cover;background-position:center;}
+  .guide-card h4{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--dark);margin-bottom:.25rem;}
+  .guide-card p{font-size:.82rem;color:var(--text-muted);}
+  .guide-stars{color:var(--gold);font-size:.8rem;margin-top:.5rem;}
+
+  /* ═══════════ ABOUT ═══════════ */
+  .about-section{background:var(--navy);color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+  .about-content .section-label{color:rgba(255,255,255,.5);}
+  .about-content .section-title{color:#fff;}
+  .about-content p{color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:1rem;font-size:.95rem;}
+  .about-content p strong{color:var(--gold-light);font-weight:600;}
+  .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+  .stat-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:1.3rem;}
+  .stat-box .number{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-light);line-height:1;margin-bottom:.3rem;}
+  .stat-box .label{font-size:.8rem;color:rgba(255,255,255,.5);}
+
+  /* ═══════════ FOOTER ═══════════ */
+  footer{background:var(--dark);color:rgba(255,255,255,.45);padding:2.5rem 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+  .footer-logo{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;}
+  .footer-logo span{color:var(--gold);}
+  footer>p{font-size:.8rem;}
+  .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+  .footer-links a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.8rem;transition:color .2s;}
+  .footer-links a:hover{color:var(--gold);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* ═══════════════════════════════════
+     RESPONSIVE BREAKPOINTS
+  ═══════════════════════════════════ */
+
+  /* ── TABLET (≤1024px) ── */
+  @media(max-width:1024px){
+    .tours-grid{grid-template-columns:repeat(2,1fr);}
+    .routes-grid{grid-template-columns:repeat(2,1fr);}
+    .hero{gap:2rem;padding:68px 5vw 3rem;}
   }
-  .tour-card:hover { transform: translateY(-6px); box-shadow: 0 24px 55px rgba(26,18,9,0.22); }
-  .tour-card .bg-zoom {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    transition: transform 0.55s ease;
+
+  /* ── TABLET PORTRAIT (≤768px) ── */
+  @media(max-width:768px){
+    /* Nav */
+    .nav-links{display:none;}
+    .hamburger{display:flex;}
+
+    /* Hero — single column */
+    .hero{grid-template-columns:1fr;min-height:auto;padding:88px 5vw 3rem;gap:2rem;}
+    .hero-content{text-align:center;}
+    .hero p{max-width:100%;margin-left:auto;margin-right:auto;}
+    .hero-actions{justify-content:center;}
+    .hero-badge{font-size:.7rem;}
+
+    /* Search card */
+    .search-card{padding:1.4rem;}
+    .search-grid{grid-template-columns:1fr;}
+
+    /* Tours — 2 col on tablet */
+    .tours-grid{grid-template-columns:repeat(2,1fr);}
+    .tour-card{height:340px;}
+
+    /* Routes — 1 col */
+    .routes-grid{grid-template-columns:1fr;}
+
+    /* Mosaic — simpler 2 col */
+    .mosaic{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,180px);}
+    .mosaic-item:first-child{grid-column:1;grid-row:1;}
+
+    /* Gallery — 2 col */
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:160px;}
+    .gallery-item:nth-child(3){grid-column:span 1;}
+
+    /* Guides — 3 col still works, shrink padding */
+    .guides-grid{grid-template-columns:repeat(3,1fr);}
+    .guide-card{padding:1.2rem 1rem;}
+    .guide-avatar{width:65px;height:65px;}
+
+    /* About */
+    .about-section{grid-template-columns:1fr;gap:2.5rem;}
+
+    /* Footer */
+    footer{flex-direction:column;text-align:center;gap:.8rem;}
+    .footer-links{justify-content:center;}
+
+    .section-wrap{padding:4rem 5vw;}
   }
-  .tour-card:hover .bg-zoom { transform: scale(1.07); }
 
-  /* Individual card backgrounds using picsum with fixed seeds */
-  .card-tadoba      { background-image: url('https://picsum.photos/seed/tiger123/600/800'); }
-  .card-konkan      { background-image: url('https://picsum.photos/seed/beach456/600/800'); }
-  .card-bhigwan     { background-image: url('https://picsum.photos/seed/lake789/600/800'); }
-  .card-ghats       { background-image: url('https://picsum.photos/seed/mountain321/600/800'); }
-  .card-lonavala    { background-image: url('https://picsum.photos/seed/valley654/600/800'); }
-  .card-mahabal     { background-image: url('https://picsum.photos/seed/hills987/600/800'); }
+  /* ── MOBILE (≤480px) ── */
+  @media(max-width:480px){
+    /* Nav */
+    .logo{font-size:1.3rem;}
+    nav{padding:0 4vw;height:60px;}
+    .mobile-menu{top:60px;}
 
-  .tour-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(10,8,4,0.92) 0%, rgba(10,8,4,0.35) 50%, rgba(0,0,0,0.05) 100%);
+    /* Hero */
+    .hero{padding:80px 4vw 2.5rem;}
+    .hero h1{font-size:2rem;}
+    .hero p{font-size:.92rem;}
+    .btn-primary,.btn-outline{padding:.75rem 1.4rem;font-size:.85rem;width:100%;justify-content:center;}
+    .hero-actions{flex-direction:column;}
+
+    /* Search */
+    .search-card{padding:1.2rem;border-radius:12px;}
+    .search-card h3{font-size:1.1rem;}
+    .trust-badges{gap:.8rem;}
+    .trust-badge{font-size:.72rem;}
+
+    /* Sections */
+    .section-wrap{padding:3rem 4vw;}
+    .section-title{font-size:1.5rem;}
+    .section-sub{font-size:.88rem;margin-bottom:2rem;}
+
+    /* Tours — 1 col on mobile */
+    .tours-grid{grid-template-columns:1fr;}
+    .tour-card{height:300px;}
+
+    /* Routes — 1 col */
+    .routes-grid{grid-template-columns:1fr;}
+
+    /* Mosaic — simple 2 col equal */
+    .mosaic{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,150px);gap:.5rem;}
+    .mosaic-item:first-child{grid-column:1;grid-row:1;}
+
+    /* Gallery — 2 col */
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:140px;gap:.5rem;}
+    .gallery-item:nth-child(3){grid-column:span 1;}
+
+    /* Guides — 1 col on mobile */
+    .guides-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto;}
+    .guide-avatar{width:80px;height:80px;}
+
+    /* About stats */
+    .about-stats{grid-template-columns:1fr 1fr;gap:.8rem;}
+    .stat-box{padding:1rem;}
+    .stat-box .number{font-size:1.6rem;}
+
+    /* Footer */
+    .footer-links{gap:1rem;}
+    .footer-links a{font-size:.78rem;}
   }
-  .tour-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.6rem; color: #fff; z-index: 2; }
-  .tour-tag { display: inline-block; background: var(--gold); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.28rem 0.75rem; border-radius: 100px; margin-bottom: 0.65rem; }
-  .tour-info h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .tour-info p { font-size: 0.85rem; opacity: 0.82; }
 
-  /* CAB ROUTES — same CSS bg trick */
-  .routes-section { background: var(--dark); }
-  .routes-section .section-label { color: var(--gold-light); }
-  .routes-section .section-title { color: #fff; }
-  .routes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-
-  .route-card {
-    border-radius: 14px; overflow: hidden; cursor: none;
-    transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.08);
-  }
-  .route-card:hover { transform: translateY(-4px); }
-
-  .route-img-bg {
-    height: 200px;
-    background-size: cover; background-position: center;
-    transition: filter 0.3s, transform 0.4s;
-    filter: brightness(0.78);
-  }
-  .route-card:hover .route-img-bg { filter: brightness(1); transform: scale(1.03); }
-
-  .route-pune-mumbai { background-image: url('https://unsplash.com/photos/a-large-building-with-a-clock-tower-on-top-of-it-XIycXx72DgQ'); }
-  .route-mumbai-pune { background-image: url('https://picsum.photos/seed/city88/600/300'); }
-  .route-new        { background-image: url('https://picsum.photos/seed/road55/600/300'); }
-
-  .route-info { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 1.3rem 1.4rem; }
-  .route-from-to { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
-  .city { font-size: 1.05rem; font-weight: 600; color: #fff; }
-  .route-arrow { color: var(--gold); font-size: 1.1rem; }
-  .route-detail { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
-  .route-badge { display: inline-block; background: rgba(200,151,58,0.2); color: var(--gold-light); font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.7rem; border-radius: 100px; border: 1px solid rgba(200,151,58,0.3); margin-top: 0.6rem; }
-
-  /* DESTINATIONS MOSAIC — CSS bg */
-  .mosaic { display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(2,240px); gap: 0.8rem; }
-  .mosaic-item {
-    border-radius: 10px; overflow: hidden; cursor: none;
-    background-size: cover; background-position: center;
-    transition: transform 0.4s, filter 0.3s; filter: brightness(0.85);
-  }
-  .mosaic-item:first-child { grid-column: 1; grid-row: 1/3; }
-  .mosaic-item:hover { transform: scale(1.03); filter: brightness(1); }
-
-  .m1 { background-image: url('https://picsum.photos/seed/sahyadri11/500/600'); }
-  .m2 { background-image: url('https://picsum.photos/seed/konkan22/500/300'); }
-  .m3 { background-image: url('https://picsum.photos/seed/birds33/500/300'); }
-  .m4 { background-image: url('https://picsum.photos/seed/falls44/500/300'); }
-  .m5 { background-image: url('https://picsum.photos/seed/lake55/500/300'); }
-
-  /* GALLERY — CSS bg */
-  .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-auto-rows: 200px; gap: 0.8rem; }
-  .gallery-item {
-    border-radius: 10px; overflow: hidden; cursor: none;
-    background-size: cover; background-position: center;
-    transition: transform 0.4s, filter 0.3s; filter: brightness(0.9);
-  }
-  .gallery-item:nth-child(3) { grid-column: span 2; }
-  .gallery-item:hover { transform: scale(1.04); filter: brightness(1.05); }
-
-  .g1 { background-image: url('https://picsum.photos/seed/ghat1/400/300'); }
-  .g2 { background-image: url('https://picsum.photos/seed/beach2/400/300'); }
-  .g3 { background-image: url('https://picsum.photos/seed/valley3/800/300'); }
-  .g4 { background-image: url('https://picsum.photos/seed/bird4/400/300'); }
-  .g5 { background-image: url('https://picsum.photos/seed/green5/400/300'); }
-  .g6 { background-image: url('https://picsum.photos/seed/sunset6/400/300'); }
-
-  /* GUIDES */
-  .guides-section { background: #F5EEE3; }
-  .guides-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1.5rem; }
-  .guide-card { background: #fff; border-radius: 14px; padding: 1.8rem 1.4rem; text-align: center; box-shadow: 0 2px 16px rgba(26,18,9,0.07); transition: transform 0.25s, box-shadow 0.25s; cursor: none; }
-  .guide-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(26,18,9,0.12); }
-  .guide-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); margin: 0 auto 1rem; background-size: cover; background-position: center; }
-  .guide-card h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); margin-bottom: 0.25rem; }
-  .guide-card p { font-size: 0.82rem; color: var(--text-muted); }
-  .guide-stars { color: var(--gold); font-size: 0.8rem; margin-top: 0.5rem; }
-
-  /* ABOUT */
-  .about-section { background: var(--navy); color: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-  .about-content .section-label { color: rgba(255,255,255,0.5); }
-  .about-content .section-title { color: #fff; }
-  .about-content p { color: rgba(255,255,255,0.72); line-height: 1.75; margin-bottom: 1rem; font-size: 0.97rem; }
-  .about-content p strong { color: var(--gold-light); font-weight: 600; }
-  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .stat-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 1.4rem; }
-  .stat-box .number { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--gold-light); line-height: 1; margin-bottom: 0.3rem; }
-  .stat-box .label { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
-
-  /* FOOTER */
-  footer { background: var(--dark); color: rgba(255,255,255,0.45); padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; }
-  .footer-logo span { color: var(--gold); }
-  footer p { font-size: 0.82rem; }
-  .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--gold); }
-
-  @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  @media (max-width:900px) {
-    .hero { grid-template-columns: 1fr; padding-top: 100px; min-height: auto; padding-bottom: 4rem; }
-    .about-section { grid-template-columns: 1fr; }
-    .mosaic { grid-template-columns: 1fr 1fr; }
-    .mosaic-item:first-child { grid-column: 1; grid-row: 1; }
-    .gallery-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width:600px) {
-    .nav-links a:not(.nav-cta) { display: none; }
-    .hero h1 { font-size: 2.4rem; }
-    .search-grid { grid-template-columns: 1fr; }
-    .gallery-grid { grid-template-columns: 1fr; }
-    .gallery-item:nth-child(3) { grid-column: span 1; }
-    footer { flex-direction: column; text-align: center; }
+  /* ── VERY SMALL (≤360px) ── */
+  @media(max-width:360px){
+    .hero h1{font-size:1.8rem;}
+    .mosaic{grid-template-columns:1fr;grid-template-rows:auto;}
+    .mosaic-item{height:160px;}
+    .mosaic-item:first-child{grid-column:1;grid-row:1;}
+    .gallery-grid{grid-template-columns:1fr;grid-auto-rows:160px;}
+    .gallery-item:nth-child(3){grid-column:span 1;}
+    .about-stats{grid-template-columns:1fr 1fr;}
   }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
+
+<!-- NAV -->
 <nav id="navbar">
   <a href="index.html" class="logo"><span>Route</span><span>Master</span></a>
   <div class="nav-links">
@@ -243,7 +320,18 @@
     <a href="#about">About</a>
     <a href="booking.html" class="nav-cta">Book Now</a>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#tours" onclick="closeMenu()">Tours</a>
+  <a href="#cabs" onclick="closeMenu()">Cab Routes</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="booking.html" class="m-cta">✦ Book Now</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -263,7 +351,7 @@
       <div class="search-grid">
         <div class="search-field full">
           <label>Destination</label>
-          <input type="text" id="place" placeholder="e.g. Tadoba, Lonavala, Konkan, Bhigwan…">
+          <input type="text" id="place" placeholder="e.g. Tadoba, Lonavala, Konkan…">
         </div>
         <div class="search-field">
           <label>Departure Date</label>
@@ -293,37 +381,12 @@
     <p class="section-sub">Hand-picked destinations across Maharashtra — wildlife, coast, ghats, and more.</p>
   </div>
   <div class="tours-grid reveal">
-
-    <div class="tour-card card-tadoba">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Wildlife</div><h3>Tadoba</h3><p>Tiger safaris & jungle stays</p></div>
-    </div>
-
-    <div class="tour-card card-konkan">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Coastal</div><h3>Konkan</h3><p>Pristine beaches & fresh seafood</p></div>
-    </div>
-
-    <div class="tour-card card-bhigwan">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Nature</div><h3>Bhigwan</h3><p>Flamingos & birdwatching haven</p></div>
-    </div>
-
-    <div class="tour-card card-ghats">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Hills</div><h3>Western Ghats</h3><p>Misty valleys & cascading waterfalls</p></div>
-    </div>
-
-    <div class="tour-card card-lonavala">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Hill Station</div><h3>Lonavala</h3><p>Lush valleys & scenic viewpoints</p></div>
-    </div>
-
-    <div class="tour-card card-mahabal">
-      <div class="tour-overlay"></div>
-      <div class="tour-info"><div class="tour-tag">Getaway</div><h3>Mahabaleshwar</h3><p>Strawberry farms & cool mountain air</p></div>
-    </div>
-
+    <div class="tour-card card-tadoba"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Wildlife</div><h3>Tadoba</h3><p>Tiger safaris & jungle stays</p></div></div>
+    <div class="tour-card card-konkan"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Coastal</div><h3>Konkan</h3><p>Pristine beaches & fresh seafood</p></div></div>
+    <div class="tour-card card-bhigwan"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Nature</div><h3>Bhigwan</h3><p>Flamingos & birdwatching haven</p></div></div>
+    <div class="tour-card card-ghats"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Hills</div><h3>Western Ghats</h3><p>Misty valleys & cascading waterfalls</p></div></div>
+    <div class="tour-card card-lonavala"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Hill Station</div><h3>Lonavala</h3><p>Lush valleys & scenic viewpoints</p></div></div>
+    <div class="tour-card card-mahabal"><div class="tour-overlay"></div><div class="tour-info"><div class="tour-tag">Getaway</div><h3>Mahabaleshwar</h3><p>Strawberry farms & cool mountain air</p></div></div>
   </div>
 </div>
 
@@ -333,37 +396,21 @@
     <div class="section-label">Intercity Travel</div>
     <div class="divider"></div>
     <h2 class="section-title">Cab Routes</h2>
-    <p class="section-sub" style="color:rgba(255,255,255,0.55)">Comfortable, on-time intercity cabs across Maharashtra. More routes coming soon.</p>
+    <p class="section-sub" style="color:rgba(255,255,255,.55)">Comfortable, on-time intercity cabs across Maharashtra. More routes coming soon.</p>
   </div>
   <div class="routes-grid reveal">
-
     <div class="route-card">
       <div class="route-img-bg route-pune-mumbai"></div>
-      <div class="route-info">
-        <div class="route-from-to"><span class="city">Pune</span><span class="route-arrow">→</span><span class="city">Mumbai</span></div>
-        <p class="route-detail">Pick-up in Pune · ~3.5 hrs</p>
-        <span class="route-badge">Available Now</span>
-      </div>
+      <div class="route-info"><div class="route-from-to"><span class="city">Pune</span><span class="route-arrow">→</span><span class="city">Mumbai</span></div><p class="route-detail">Pick-up in Pune · ~3.5 hrs</p><span class="route-badge">Available Now</span></div>
     </div>
-
     <div class="route-card">
       <div class="route-img-bg route-mumbai-pune"></div>
-      <div class="route-info">
-        <div class="route-from-to"><span class="city">Mumbai</span><span class="route-arrow">→</span><span class="city">Pune</span></div>
-        <p class="route-detail">Pick-up in Mumbai · ~3.5 hrs</p>
-        <span class="route-badge">Available Now</span>
-      </div>
+      <div class="route-info"><div class="route-from-to"><span class="city">Mumbai</span><span class="route-arrow">→</span><span class="city">Pune</span></div><p class="route-detail">Pick-up in Mumbai · ~3.5 hrs</p><span class="route-badge">Available Now</span></div>
     </div>
-
-    <div class="route-card" style="opacity:0.55;">
+    <div class="route-card" style="opacity:.55;">
       <div class="route-img-bg route-new"></div>
-      <div class="route-info">
-        <div class="route-from-to"><span class="city">New Routes</span></div>
-        <p class="route-detail">Expanding across Maharashtra</p>
-        <span class="route-badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);border-color:rgba(255,255,255,0.12)">Coming Soon</span>
-      </div>
+      <div class="route-info"><div class="route-from-to"><span class="city">New Routes</span></div><p class="route-detail">Expanding across Maharashtra</p><span class="route-badge" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.12)">Coming Soon</span></div>
     </div>
-
   </div>
 </div>
 
@@ -432,10 +479,10 @@
     <div class="section-label">Who We Are</div>
     <div class="divider" style="background:var(--gold-light)"></div>
     <h2 class="section-title">Explore महाराष्ट्र with Us</h2>
-    <p>Discover the beauty of Maharashtra with thoughtfully curated tours that bring you closer to nature, culture, and unforgettable experiences. From the serene birdwatching haven of <strong>Bhigwan</strong> to the thrilling wildlife safaris of <strong>Tadoba</strong>, and the breathtaking coastal charm of the <strong>Konkan</strong> region.</p>
+    <p>Discover the beauty of Maharashtra with thoughtfully curated tours. From the serene birdwatching haven of <strong>Bhigwan</strong> to the thrilling wildlife safaris of <strong>Tadoba</strong>, and the breathtaking coastal charm of the <strong>Konkan</strong> region.</p>
     <p>Whether you're seeking the misty <strong>Western Ghats</strong>, lush hill stations of <strong>Mahabaleshwar</strong>, or a weekend escape to <strong>Lonavala</strong> — we make every journey smooth and memorable.</p>
-    <p>Our reliable intercity cab service currently operates between <strong>Pune</strong> and <strong>Mumbai</strong>, ensuring safe, comfortable, and timely journeys — with more routes coming soon.</p>
-    <div style="margin-top:2rem;">
+    <p>Our reliable intercity cab service currently operates between <strong>Pune</strong> and <strong>Mumbai</strong>, with more routes coming soon.</p>
+    <div style="margin-top:1.8rem;">
       <a href="booking.html" class="btn-primary" style="background:var(--gold);">✦ Book Your Trip</a>
     </div>
   </div>
@@ -447,6 +494,7 @@
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer id="contact">
   <div class="footer-logo">Route<span>Master</span></div>
   <p>© 2026 RouteMaster. All rights reserved.</p>
@@ -460,34 +508,36 @@
 </footer>
 
 <script>
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my, rx = mx, ry = my;
-  window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
-  (function animCursor() {
-    cx += (mx-cx)*0.18; cy += (my-cy)*0.18;
-    rx += (mx-rx)*0.08; ry += (my-ry)*0.08;
-    cursor.style.left = (cx-7)+'px'; cursor.style.top = (cy-7)+'px';
-    ring.style.left = (rx-20)+'px'; ring.style.top = (ry-20)+'px';
-    requestAnimationFrame(animCursor);
-  })();
 
-  document.querySelectorAll('a,button,.tour-card,.route-card,.guide-card').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.style.background='#B84A1E'; cursor.style.transform='scale(2)'; });
-    el.addEventListener('mouseleave', () => { cursor.style.background='#C8973A'; cursor.style.transform='scale(1)'; });
+
+  /* Navbar scroll */
+  window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>30));
+
+  /* Hamburger menu */
+  function toggleMenu(){
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu(){
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+  /* Close menu on outside click */
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('nav')&&!e.target.closest('.mobile-menu')) closeMenu();
   });
 
-  window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', scrollY > 30));
+  /* Scroll reveal */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});
+  },{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); } });
-  }, {threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  function doSearch() {
-    const p = document.getElementById('place').value.trim();
-    if(!p){ alert('Please enter a destination'); return; }
-    window.location.href = 'booking.html?destination='+encodeURIComponent(p);
+  /* Search */
+  function doSearch(){
+    const p=document.getElementById('place').value.trim();
+    if(!p){alert('Please enter a destination');return;}
+    window.location.href='booking.html?destination='+encodeURIComponent(p);
   }
 </script>
 </body>
